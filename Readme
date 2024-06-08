@@ -1,0 +1,92 @@
+2.1 Créer un projet Django: student_management_project
+
+django-admin startproject student_management_project
+2.2 Créer un projet Django: student_management_application au sein du
+projet student_management_project
+
+python manage.py startapp student_management_application
+
+2.3 Définissez les modèles de données dans votre application
+student_management_application
+
+from django.db import models
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    sex = models.CharField(max_length=10)
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Teacher(models.Model):
+    name = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Course(models.Model):
+    name = models.CharField(max_length=100)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    students = models.ManyToManyField(Student, related_name='courses')
+
+    def __str__(self):
+        return self.name
+
+class Score(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    score = models.FloatField()
+
+    def __str__(self):
+        return f'{self.student.name} - {self.course.name} : {self.score}'
+
+
+
+2.4 Configurez la base de données dans les paramètres de votre projet :
+student_management_project
+
+
+"default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+
+2.5 Configurez la nouvelle l'application student_management_application dans votre projet
+
+"student_management_application",
+
+2.6 Effectuer les migrations
+
+python manage.py makemigrations
+pip install mysqlclient
+python manage.py migrate
+
+2.7 Insérer dans votre base de données quelques lignes de jeux de données
+
+
+-- Exemple de données pour la table Student
+INSERT INTO student_management_application_student (name, age, sex) VALUES
+('John Doe', 20, 'm'),
+('Jane Smith', 22, 'f'),
+('Bob Johnson', 21, 'm');
+-- Exemple de données pour la table Teacher
+INSERT INTO student_management_application_teacher (name, subject) VALUES
+('Professor Brown', 'Mathematics'),
+('Dr. Johnson', 'Physics'),
+('Mrs. Davis', 'English');
+-- Exemple de données pour la table Course
+INSERT INTO student_management_application_course (name, teacher_id) VALUES
+('Math 101', 1),
+('Physics 201', 2),
+('English Literature', 3);
+-- Exemple de données pour la table Score
+INSERT INTO student_management_application_score (student_id, course_id, score)
+VALUES
+(1, 1, 85),
+(1, 2, 92),
+(2, 2, 88),
+(3, 3, 95);
+
