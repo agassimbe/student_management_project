@@ -68,10 +68,10 @@ python manage.py migrate
 
 
 -- Exemple de données pour la table Student
-INSERT INTO student_management_application_student (name, age, sex) VALUES
-('John Doe', 20, 'm'),
-('Jane Smith', 22, 'f'),
-('Bob Johnson', 21, 'm');
+INSERT INTO student_management_application_student (name, age, sex,email) VALUES
+('John Doe', 20, 'm','test1@exemple.com'),
+('Jane Smith', 22, 'f', 'test2@exemple.com'),
+('Bob Johnson', 21, 'm', 'test3@exemple.com');
 -- Exemple de données pour la table Teacher
 INSERT INTO student_management_application_teacher (name, subject) VALUES
 ('Professor Brown', 'Mathematics'),
@@ -195,6 +195,94 @@ student_management_application pour représenter les données récupérées
     </ul>
 </body>
 </html>
+
+
+3.3 Créer un fichier urls.py dans l'application
+student_management_application et compléter celui du projet
+student_management_project
+
+
+# student_management_application/urls.py
+
+from django.urls import path
+# from .views import student_list, course_list, teacher_list, score_list
+from . import views
+
+app_name = 'student_management_application'
+
+urlpatterns = [
+    path('students/', views.student_list, name='student_list'),
+    path('courses/', views.course_list, name='course_list'),
+    path('teachers/', views.teacher_list, name='teacher_list'),
+    path('scores/', views.score_list, name='score_list'),
+]
+
+# student_management_project/urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path('', include('student_management_application.urls')),
+]
+
+3.4 Lancer le serveur de développement Django
+
+python manage.py runserver
+
+http://127.0.0.1:8000/student_management_application/students/
+http://127.0.0.1:8000/student_management_application/courses/
+http://127.0.0.1:8000/student_management_application/teachers/
+http://127.0.0.1:8000/student_management_application/scores/
+
+4 Forms - Formulaires
+4.1 Ajouter un étudiant
+4.1.1 Créez un fichier forms.py dans student_management_application pour définir le
+formulaire StudentForm
+
+from django import forms
+from .models import Student
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'age', 'sex', 'email']
+
+4.1.2 Compléter le fichier views.py dans student_management_application pour la
+fonctionalité l'ajout d'un étudiant avec un template add_student.html après.
+
+def add_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')  # Rediriger vers la liste des étudiants après ajout
+    else:
+        form = StudentForm()
+    return render(request, 'add_student.html', {'form': form})
+
+4.1.3 Créez un template simple pour réaliser l'ajout d'un étudiant add_student.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter un Étudiant</title>
+</head>
+<body>
+    <h1>Ajouter un Étudiant</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ajouter Étudiant</button>
+    </form>
+</body>
+</html>
+
+4.1.4 Compléter le fichier urls.py dans student_management_application
+
+path('students/add/', add_student, name='add_student')
+
 
 
 
