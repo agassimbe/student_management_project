@@ -1,0 +1,16 @@
+<!-- templates/course_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Cours</title>
+</head>
+<body>
+    <h1>Liste des Cours</h1>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.name }} - Enseignant : {{ course.teacher.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

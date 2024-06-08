@@ -90,3 +90,111 @@ VALUES
 (2, 2, 88),
 (3, 3, 95);
 
+3 Vues - Templates - URLs
+
+3.1 Réaliser avec le fichier views.py de l'application
+student_management_application :
+
+#student_management_application/views.py
+from .models import Student
+
+from .models import Student, Teacher, Course, Score
+
+# Create your views here.
+from .models import Student
+
+
+# Vue pour lister les étudiants
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'core/student_list.html', {'students': students})
+
+# Vue pour lister les cours
+def course_list(request):
+    courses = Course.objects.all()
+    return render(request, 'core/course_list.html', {'courses': courses})
+
+# Vue pour lister les enseignants
+def teacher_list(request):
+    teachers = Teacher.objects.all()
+    return render(request, 'core/teacher_list.html', {'teachers': teachers})
+
+# Vue pour lister les scores
+def score_list(request):
+    scores = Score.objects.all()
+    return render(request, 'core/score_list.html', {'scores': scores})
+
+
+3.2 Réaliser avec trois fichiers templates student_list.html , course_list.html ,
+teacher_list.html et score_list.html de l'application
+student_management_application pour représenter les données récupérées
+
+<!-- templates/student_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Étudiants</title>
+</head>
+<body>
+    <h1>Liste des Étudiants</h1>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.age }} ans - {{ student.sex }} - {{ student.email }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+<!-- templates/course_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Cours</title>
+</head>
+<body>
+    <h1>Liste des Cours</h1>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.name }} - Enseignant : {{ course.teacher.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+<!-- templates/teacher_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Enseignants</title>
+</head>
+<body>
+    <h1>Liste des Enseignants</h1>
+    <ul>
+        {% for teacher in teachers %}
+            <li>{{ teacher.name }} - Matière : {{ teacher.subject }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+<!-- templates/score_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Scores</title>
+</head>
+<body>
+    <h1>Liste des Scores</h1>
+    <ul>
+        {% for score in scores %}
+            <li>{{ score.student.name }} - {{ score.course.name }} : {{ score.score }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+

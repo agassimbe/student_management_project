@@ -1,0 +1,15 @@
+<!-- templates/student_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Étudiants</title>
+</head>
+<body>
+    <h1>Liste des Étudiants</h1>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.age }} ans - {{ student.sex }} - {{ student.email }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!-- templates/teacher_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Enseignants</title>
+</head>
+<body>
+    <h1>Liste des Enseignants</h1>
+    <ul>
+        {% for teacher in teachers %}
+            <li>{{ teacher.name }} - Matière : {{ teacher.subject }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

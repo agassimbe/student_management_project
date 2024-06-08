@@ -1,0 +1,16 @@
+<!-- templates/score_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Scores</title>
+</head>
+<body>
+    <h1>Liste des Scores</h1>
+    <ul>
+        {% for score in scores %}
+            <li>{{ score.student.name }} - {{ score.course.name }} : {{ score.score }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
